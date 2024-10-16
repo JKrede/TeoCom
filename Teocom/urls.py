@@ -25,5 +25,5 @@ urlpatterns = [
     path('lecturas/', views.lecturas),
     path('contacto/', views.contacto),
     path('valores_criticos/', views.valores_criticos),
-    path('registros/v1/', include('ConSens.urls')),
+    path('registros/', include('ConSens.urls')),
 ]

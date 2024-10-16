@@ -1,10 +1,8 @@
-from django.urls import path, include
-from rest_framework import routers
-from ConSens import views
-
-router=routers.DefaultRouter()
-router.register(r"registros", views.RegistrosViewSet)
-
+from django.urls import path
+from . import api
 urlpatterns = [
-    path(" ", include(router.urls)),
+    path("registros/", api.registros_api_view),
+    path("ubicacion/", api.registros_ubicacion_view),
+    path("modulo/", api.registros_modulo_view),
 ]
+ 
