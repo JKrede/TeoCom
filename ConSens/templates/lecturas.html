@@ -1,15 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     {%load static%}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="OG:TITLE" content="ConSens">
+    <meta name="OG:IMAGE" content="{%static 'img/logo.png'%}">
+    <meta name="OG:description" content="Pagina dedicada al control de sensores (ConSens) creado por estudiantes de la UNC-FCEFyN">
     <title>Lecturas</title>
+    <link rel="icon" href="{%static 'img/logo.png'%}" type="image/png">
     <link rel="stylesheet" href="{%static 'css/styles.css'%}">
 </head>
 <body>
     <header>
         {% include "index.html"%}
     </header>
+    <form action="{% url 'filtrar_ubicacion' %}" method="get">
+        <input type="text" id="ubicacion" name="ubicacion" placeholder="Filtrar por ubicacion">
+    </form>
+    <form action="{% url 'filtrar_modulo' %}" method="get">
+        <input type="text" id="modulo" name="modulo" placeholder="Filtrar por modulo">
+    </form>
+    <table class="tabla">
+        <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Modulo</th>
+            <th>Ubicación</th>
+            <th>Temperatura [°C]</th>
+            <th>Humedad [%]</th>
+            <th>Presión [Pa]</th>
+        </tr>
+        {% for registro in datos %}
+        <tr>
+            <td>{{ registro.id }}</td>
+            <td>{{ registro.fecha }}</td>
+            <td>{{ registro.hora }}</td>
+            <td>{{ registro.modulo }}</td>
+            <td>{{ registro.ubicacion }}</td>
+            <td>{{ registro.temperatura }}</td>
+            <td>{{ registro.humedad }}</td>
+            <td>{{ registro.presion }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>

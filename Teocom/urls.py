@@ -20,10 +20,12 @@ from ConSens import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('registros/', include('ConSens.urls')),
     path('', views.inicio),
     path('registrarse/', views.registrarse),
-    path('lecturas/', views.lecturas),
     path('contacto/', views.contacto),
     path('valores_criticos/', views.valores_criticos),
-    path('registros/', include('ConSens.urls')),
+    path('lecturas/', views.mostrar_datos),
+    path('filtrar_ubicacion', views.filtrar_ubicacion, name='filtrar_ubicacion'),
+    path('filtrar_modulo', views.filtrar_modulo, name='filtrar_modulo'),
 ]

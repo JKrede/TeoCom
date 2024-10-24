@@ -12,10 +12,6 @@ def registrarse(request):
 
     return render(request, "registrarse.html")
 
-def lecturas(request):
-    
-   return render(request, "lecturas.html")
-
 def contacto(request):
     
     return render(request, "contacto.html")
@@ -23,7 +19,27 @@ def contacto(request):
 def valores_criticos(request):
     
     return render(request, "valores_criticos.html")
+    
+def mostrar_datos(request):
+    datos = Registros.objects.all() 
+    return render(request, 'lecturas.html', {'datos': datos})
 
-class RegistrosViewSet(viewsets.ModelViewSet):
-    queryset = Registros.objects.all()
-    serializer_class = RegistrosSerializer 
+def filtrar_ubicacion(request):
+    ubicacion = request.GET.get('ubicacion')
+    if ubicacion: 
+        datos = Registros.objects.filter(ubicacion__icontains=ubicacion)  
+    else:
+        datos = Registros.objects.all()
+        
+    return render(request, 'lecturas.html', {'datos': datos})
+
+def filtrar_modulo(request):
+    modulo = request.GET.get('modulo')
+    if modulo: 
+        datos = Registros.objects.filter(modulo__icontains=modulo)  
+    else:
+        datos = Registros.objects.all()
+        
+    return render(request, 'lecturas.html', {'datos': datos})
+
+
