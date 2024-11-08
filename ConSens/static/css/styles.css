@@ -1,50 +1,192 @@
-body{
-  background-color: rgb(19, 19, 19);
+:root {
+  --bg-color: rgb(19, 19, 19);
+  --text-color: white;
+  --accent-color: #ddc77a;
+  --button-bg-color: #2c5f66;
+  --font-family: 'Bookman Old Style', monospace;
+  --border-radius: 5px;
+}
+
+/* Global Styles */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
   background-image: url(../img/logo_byn.png);
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
-  background-size: 350px 350px ;
+  background-size: 300px 300px;
 }
 
-.logo{
-  width: 30%;
-  height: 15%;
-  min-width: 170px;
-  padding: 0;
-  margin-left: 3vw;
+a:any-link, button:any-link {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-color);
+}
+
+/* Logo */
+.logo {
+  max-width: 35vw;
+  margin-left: 4px;
   cursor: pointer;
 }
 
-.barra{
+/* Navbar */
+.barra__nav {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin: 0 20vw;
   list-style: none;
   text-transform: uppercase;
 }
 
-.barra__item{
-  font-family: 'Bookman Old Style',monospace;
+.barra__nav--item{
+  font-family: var(--font-family);
   font-weight: bold;
-  display: inline-flex;
+  font-size: 1.4em;
+  text-align: center;
+  margin: 1vw 1vw;
+  padding: 10px 5px;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--accent-color);
+  background-color: var(--button-bg-color);
+}
+
+/* Navbar valores criticos */
+.barra__vc {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  text-transform: uppercase;
+}
+.barra__vc--item{
+  font-family: var(--font-family);
+  font-weight: bold;
   font-size: 1em;
   text-align: center;
+  margin: 0.4vw 1vw;
+  padding: 10px 5px;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--accent-color);
+  background-color: var(--button-bg-color);
+}
+
+.tabla {
+  width: 100%;
+  display: table;
+  background-color: transparent;
+}
+
+.tabla__item {
+  display: table-cell;
+  font-family: var(--font-family);
+  font-size: 1em;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.filtros{
+  width: 99%;
+  margin: 10px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+}
+
+#filtros__ubicacion, #filtros__modulo, #filtros__fecha, #filtros__usuario{
+  font-family: var(--font-family);
+  color: var(--text-color);
+  font-size: 0.8em;
   margin: 0 1vw;
-  border-radius: 50px;
-  padding: 1.5%;
-  border: 2px solid #ddc77a;
-  background-color: #2c5f66;
+  padding: 5px;
+  border-radius: 5px;
+  border: 2px solid var(--accent-color);
+  background-color: var(--button-bg-color);
 }
 
-a:any-link{
-  color:white;
-  text-decoration: none;
+#filtros__filtrar{
+  color: var(--text-color);
+  font-size: 0.5em;
+  font-family: var(--font-family);
+  font-size: 0.8em;
+  margin: 0 1vw;
+  padding: 5px;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--accent-color);
+  background-color: var(--button-bg-color)
+}
+#filtros__filtrar:hover {
+  color: var(--accent-color);
 }
 
-a:hover{
-  color: #ddc77a;
+#texto{
+  font-size: 1.2em;
+}
+
+
+@media screen and (max-width: 1050px) {
+  
+  .barra__nav--item{
+    font-size: 0.8em;
+  }
+
+  .barra__vc--item{
+    font-size: 0.6em;
+  }
+
+  .filtros{
+  display: flex;
+  flex-wrap: wrap;
+  }
+
+  .tabla{
+      font-size: 0.65em;
+  }
+
+  #filtros__ubicacion, #filtros__modulo, #filtros__fecha, #filtros__usuario{
+    font-size: 0.4em;
+  }
+
+  #filtros__filtrar{
+    font-size: 0.3em;
+  }
+  #texto{
+    font-size: 0.6em
+  }
+}
+
+@media screen and (max-width: 575px) {
+  
+  .barra__nav--item{
+    font-size: 0.5em;
+  }
+
+  .barra__vc--item{
+    font-size: 0.3em;
+  }
+  
+  .tabla__item {
+      font-size: 0.4em;
+  }
+  
+  #filtros__ubicacion, #filtros__modulo, #filtros__fecha, #filtros__usuario{
+    font-size: 0.25em;
+  }
+
+  #filtros__filtrar{
+    font-size: 0.2em;
+    size: 0.1em;
+  }
+  
+  #texto{
+    font-size: 0.25em
+  }
+
 }

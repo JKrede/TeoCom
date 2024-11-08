@@ -1,8 +1,6 @@
-from django.shortcuts import render, HttpResponse
-from django.template.loader import get_template
-from rest_framework import viewsets
-from .serializer import RegistrosSerializer
-from .models import Registros
+from django.shortcuts import render
+from .models import Registros, ValorCriticoTemperatura, ValorCriticoHumedad, ValorCriticoPresion
+from django.core.paginator import Paginator
 
 def inicio(request):
     
@@ -12,18 +10,115 @@ def registrarse(request):
 
     return render(request, "registrarse.html")
 
-def lecturas(request):
+def quienes_somos(request):
     
-   return render(request, "lecturas.html")
-
-def contacto(request):
+    return render(request, "quienes_somos.html")
     
-    return render(request, "contacto.html")
+def mostrar_lecturas(request):
+    """Devuelve todos los datos de la entidad 'Registros'."""
+    datos = Registros.objects.all() 
+    return render(request, 'lecturas.html', {'datos': datos})
 
-def valores_criticos(request):
+def filtrar_lecturas(request):
+    """Devuelve los datos de la entidad 'Registros' filtrando por ubicación, módulo y rango de fechas."""
+    ubicacion = request.GET.get('ubicacion').strip()
+    modulo = request.GET.get('modulo').strip()
+    fecha_max = request.GET.get('fecha_max')
+    fecha_min = request.GET.get('fecha_min')
+
+    datos = Registros.objects.all()
     
-    return render(request, "valores_criticos.html")
+    # Filtra por ubicación
+    if ubicacion:
+        datos = datos.filter(ubicacion__icontains=ubicacion)
+    
+    # Filtra por módulo
+    if modulo:
+        datos = datos.filter(modulo__icontains=modulo)
+    
+    # Filtra por rango de fechas
+    if fecha_min and fecha_max:
+        datos = datos.filter(fecha__gte=fecha_min, fecha__lte=fecha_max)
+        
+    return render(request, 'lecturas.html', {'datos': datos})
 
-class RegistrosViewSet(viewsets.ModelViewSet):
-    queryset = Registros.objects.all()
-    serializer_class = RegistrosSerializer 
+def valores_criticos_temperatura(request):
+    """Devuelve todos los datos de la entidad 'ValorCriticoTemperatura'."""
+    valores = ValorCriticoTemperatura.objects.all() 
+    return render(request, 'valores_criticos_temp.html', {'valores': valores})
+
+def filtrar_temp(request):
+    """Devuelve los datos de la entidad 'ValorCriticoTemperatura' filtrando por módulo, usuario y fecha."""
+    modulo = request.GET.get('modulo').strip()
+    usuario = request.GET.get('usuario').strip()
+    fecha =request.GET.get('fecha')
+
+    valores = ValorCriticoTemperatura.objects.all()
+    
+    # Filtra por módulo
+    if modulo:
+        valores = valores.filter(modulo__icontains=modulo)
+        
+    # Filtra por usuario
+    if usuario:
+        valores = valores.filter(valores__icontains=usuario)
+        
+    # Filtra por fecha especifica
+    if fecha:
+        valores = valores.filter(fecha__date=fecha)
+
+    return render(request, 'valores_criticos_temp.html', {'valores': valores})
+
+def valores_criticos_humedad(request):
+    """Devuelve todos los datos de la entidad 'ValorCriticoHumedad'."""
+    valores = ValorCriticoHumedad.objects.all() 
+    return render(request, 'valores_criticos_hum.html', {'valores': valores})
+
+def filtrar_hum(request):
+    """Devuelve los datos de la entidad 'ValorCriticoHumedad' filtrando por módulo, usuario y fecha."""
+    modulo = request.GET.get('modulo').strip()
+    usuario = request.GET.get('usuario').strip()
+    fecha =request.GET.get('fecha')
+    
+    valores = ValorCriticoHumedad.objects.all()
+    
+    # Filtra por módulo
+    if modulo:
+        valores = valores.filter(modulo__icontains=modulo)
+        
+    # Filtra por usuario
+    if usuario:
+        valores = valores.filter(valores__icontains=usuario)
+        
+    # Filtra por fecha especifica
+    if fecha:
+        valores = valores.filter(fecha__date=fecha)
+
+    return render(request, 'valores_criticos_hum.html', {'valores': valores})
+
+def valores_criticos_presion(request):
+    """Devuelve todos los datos de la entidad 'ValorCriticoPresion'."""
+    valores = ValorCriticoPresion.objects.all()
+    return render(request, 'valores_criticos_pres.html', {'valores': valores})
+
+def filtrar_pres(request):
+    """Devuelve los datos de la entidad 'ValorCriticoPresion' filtrando por módulo, usuario y fecha."""
+    modulo = request.GET.get('modulo').strip()
+    usuario = request.GET.get('usuario').strip()
+    fecha =request.GET.get('fecha')
+    
+    valores = ValorCriticoPresion.objects.all()
+    
+    # Filtra por módulo
+    if modulo:
+        valores = valores.filter(modulo__icontains=modulo)
+        
+    # Filtra por usuario
+    if usuario:
+        valores = valores.filter(valores__icontains=usuario)
+        
+    # Filtra por fecha especifica
+    if fecha:
+        valores = valores.filter(fecha__date=fecha)
+
+    return render(request, 'valores_criticos_pres.html', {'valores': valores})

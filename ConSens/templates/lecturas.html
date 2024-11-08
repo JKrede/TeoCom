@@ -1,15 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     {%load static%}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="OG:TITLE" content="ConSens">
+    <meta name="OG:IMAGE" content="{%static 'img/logo.png'%}">
+    <meta name="OG:description" content="Pagina dedicada al control de sensores (ConSens) creado por estudiantes de la UNC-FCEFyN">
     <title>Lecturas</title>
+    <link rel="icon" href="{%static 'img/logo.png'%}" type="image/png">
     <link rel="stylesheet" href="{%static 'css/styles.css'%}">
 </head>
 <body>
     <header>
-        {% include "index.html"%}
+        {% include "barra_nav.html"%}
     </header>
+
+    <form class="filtros" action="{% url 'filtrar_lecturas' %}" method="get">
+
+        <input type="text" id="filtros__ubicacion" name="ubicacion" placeholder="Filtrar por ubicacion">
+
+        <input type="text" id="filtros__modulo" name="modulo" placeholder="Filtrar por modulo">
+
+        <label for="#filtros__fecha" id="texto">Desde:</label>
+            <input type="date" id="filtros__fecha"name="fecha_min">
+
+        <label for="#filtros__fecha" id="texto">Hasta:</label>
+            <input type="date" id="filtros__fecha" name="fecha_max">
+
+        <button id="filtros__filtrar">Filtrar</button>
+    </form>
+
+    <table class="tabla">
+        <tr>
+            <th class="tabla__item">ID</th>
+            <th class="tabla__item">Fecha</th>
+            <th class="tabla__item">Hora</th>
+            <th class="tabla__item">Modulo</th>
+            <th class="tabla__item">Ubicación</th>
+            <th class="tabla__item">Temperatura [°C]</th>
+            <th class="tabla__item">Humedad [%]</th>
+            <th class="tabla__item">Presión [Pa]</th>
+        </tr>
+
+        {% for registro in datos %}
+
+        <tr>
+            <td class="tabla__item">{{ registro.id }}</td>
+            <td class="tabla__item">{{ registro.fecha }}</td>
+            <td class="tabla__item">{{ registro.hora }}</td>
+            <td class="tabla__item">{{ registro.modulo }}</td>
+            <td class="tabla__item">{{ registro.ubicacion }}</td>
+            <td class="tabla__item">{{ registro.temperatura }}</td>
+            <td class="tabla__item">{{ registro.humedad }}</td>
+            <td class="tabla__item">{{ registro.presion }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+    
 </body>
 </html>
