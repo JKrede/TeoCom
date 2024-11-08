@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from datetime import datetime
-from Teocom.settings import API_SECRET_TOKEN
+from Teocom.secrets import API_SECRET_TOKEN
 
 @api_view(['GET','POST'])
 def registros_api_view(request):
