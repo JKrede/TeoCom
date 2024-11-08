@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {%load static%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="OG:TITLE" content="ConSens">
+    <meta name="OG:IMAGE" content="{%static 'img/logo.png'%}">
+    <meta name="OG:description" content="Pagina dedicada al control de sensores (ConSens) creado por estudiantes de la UNC-FCEFyN">
+    <title>Valores criticos temperatura</title>
+    <link rel="icon" href="{%static 'img/logo.png'%}" type="image/png">
+    <link rel="stylesheet" href="{%static 'css/styles.css'%}">
+</head>
+<body>
+    <header>
+        {% include "barra_nav.html"%}
+        {% include "barra_nav_vc.html"%}
+    </header>
+
+    <form class="filtros" action="{% url 'filtrar_temp' %}" method="get">
+
+        <input type="text" id="filtros__modulo" name="modulo" placeholder="Filtrar por modulo">
+        
+        <input type="text" id="filtros__usuario" name="usuario" placeholder="Filtrar por usuario">
+
+        <label for="#filtros__fecha" id="texto">Fecha:</label>
+            <input type="date" id="filtros__fecha" name="fecha">
+
+        <button id="filtros__filtrar">Filtrar</button>
+    </form>
+
+    <table class="tabla">
+        <tr>
+            <th class="tabla__item">ID</th>
+            <th class="tabla__item">Fecha</th>
+            <th class="tabla__item">Hora</th>
+            <th class="tabla__item">Modulo</th>
+            <th class="tabla__item">Usuario</th>
+            <th class="tabla__item">Temp. max</th>
+            <th class="tabla__item">Temp. min</th>
+        </tr>
+
+        {% for valor_critico in valores %}
+
+        <tr>
+            <td class="tabla__item">{{ valor_critico.id }}</td>
+            <td class="tabla__item">{{ valor_critico.fecha }}</td>
+            <td class="tabla__item">{{ valor_critico.hora }}</td>
+            <td class="tabla__item">{{ valor_critico.modulo }}</td>
+            <td class="tabla__item">{{ valor_critico.usuario }}</td>
+            <td class="tabla__item">{{ valor_critico.temperatura_maxima }}</td>
+            <td class="tabla__item">{{ valor_critico.temperatura_minima }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+    
+</body>
+</html>

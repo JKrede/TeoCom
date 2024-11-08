@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-#Registro de datos sensados
+
 class Registros(models.Model):
+    """Almacena las mediciones de temperatura, humedad y presion por modulo y ubicacion."""
     id = models.AutoField(primary_key=True)
     fecha = models.DateField('Fecha',auto_now_add=True)
     hora = models.TimeField('Hora',auto_now_add=True)
@@ -21,9 +22,8 @@ class Registros(models.Model):
             f"los datos registrados son: temperatura: {self.temperatura} [°C], "
             f"humedad: {self.humedad} [%], presion: {self.presion} [Pa]")
 
-
-#Registro de usuarios
 class Usuarios(AbstractUser):
+    """Almacena los usuarios registrados en la pagina web."""
     es_administrador = models.BooleanField(default=False)  # Este atributo indica si el usuario puede realizar cambios en valores criticos
     email = models.EmailField(unique=True)
     
@@ -35,8 +35,8 @@ class Usuarios(AbstractUser):
         return self.username
     #Los campos username esta definido en AbstractUser y password esta definido en AbstractBaseUser
     
-#Registro de cambios de los valores criticos: Temperatura
 class ValorCriticoTemperatura(models.Model):
+    """Almacena el historico de los valores criticos de temperatura."""
     id = models.AutoField(primary_key=True)
     fecha = models.DateField(auto_now_add=True)
     hora = models.TimeField(auto_now_add=True)
@@ -53,8 +53,8 @@ class ValorCriticoTemperatura(models.Model):
         return "Valor critico maximo: %s[°C], Valor critico minimo: %s[°C] seteado: %s a las %s"\
         %(self.temperatura_maxima, self.temperatura_minima, self.fecha, self.hora)
         
-#Registro de cambios de los valores criticos: Humedad
 class ValorCriticoHumedad(models.Model):
+    """Almacena el historico de los valores criticos de humedad."""
     id = models.AutoField(primary_key=True)
     fecha = models.DateField(auto_now_add=True)
     hora = models.TimeField(auto_now_add=True)
@@ -71,8 +71,8 @@ class ValorCriticoHumedad(models.Model):
         return "Valor critico maximo: %s[%], Valor critico minimo: %s[%] seteado: %s a las %s"\
         %(self.temperatura_maxima, self.temperatura_minima, self.fecha, self.hora)
         
-#Registro de cambios de los valores criticos: Presion
 class ValorCriticoPresion(models.Model):
+    """Almacena el historico de los valores criticos de presion."""
     id = models.AutoField(primary_key=True)
     fecha = models.DateField(auto_now_add=True)
     hora = models.TimeField(auto_now_add=True)

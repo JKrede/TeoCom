@@ -13,37 +13,52 @@
 </head>
 <body>
     <header>
-        {% include "index.html"%}
+        {% include "barra_nav.html"%}
     </header>
-    <form action="{% url 'filtrar_ubicacion' %}" method="get">
-        <input type="text" id="ubicacion" name="ubicacion" placeholder="Filtrar por ubicacion">
+
+    <form class="filtros" action="{% url 'filtrar_lecturas' %}" method="get">
+
+        <input type="text" id="filtros__ubicacion" name="ubicacion" placeholder="Filtrar por ubicacion">
+
+        <input type="text" id="filtros__modulo" name="modulo" placeholder="Filtrar por modulo">
+
+        <label for="#filtros__fecha" id="texto">Desde:</label>
+            <input type="date" id="filtros__fecha"name="fecha_min">
+
+        <label for="#filtros__fecha" id="texto">Hasta:</label>
+            <input type="date" id="filtros__fecha" name="fecha_max">
+
+        <button id="filtros__filtrar">Filtrar</button>
     </form>
-    <form action="{% url 'filtrar_modulo' %}" method="get">
-        <input type="text" id="modulo" name="modulo" placeholder="Filtrar por modulo">
-    </form>
+
     <table class="tabla">
         <tr>
-            <th>ID</th>
-            <th>Fecha</th>
-            <th>Hora</th>
-            <th>Modulo</th>
-            <th>Ubicación</th>
-            <th>Temperatura [°C]</th>
-            <th>Humedad [%]</th>
-            <th>Presión [Pa]</th>
+            <th class="tabla__item">ID</th>
+            <th class="tabla__item">Fecha</th>
+            <th class="tabla__item">Hora</th>
+            <th class="tabla__item">Modulo</th>
+            <th class="tabla__item">Ubicación</th>
+            <th class="tabla__item">Temperatura [°C]</th>
+            <th class="tabla__item">Humedad [%]</th>
+            <th class="tabla__item">Presión [Pa]</th>
         </tr>
+
         {% for registro in datos %}
+
         <tr>
-            <td>{{ registro.id }}</td>
-            <td>{{ registro.fecha }}</td>
-            <td>{{ registro.hora }}</td>
-            <td>{{ registro.modulo }}</td>
-            <td>{{ registro.ubicacion }}</td>
-            <td>{{ registro.temperatura }}</td>
-            <td>{{ registro.humedad }}</td>
-            <td>{{ registro.presion }}</td>
+            <td class="tabla__item">{{ registro.id }}</td>
+            <td class="tabla__item">{{ registro.fecha }}</td>
+            <td class="tabla__item">{{ registro.hora }}</td>
+            <td class="tabla__item">{{ registro.modulo }}</td>
+            <td class="tabla__item">{{ registro.ubicacion }}</td>
+            <td class="tabla__item">{{ registro.temperatura }}</td>
+            <td class="tabla__item">{{ registro.humedad }}</td>
+            <td class="tabla__item">{{ registro.presion }}</td>
         </tr>
+
         {% endfor %}
+
     </table>
+    
 </body>
 </html>

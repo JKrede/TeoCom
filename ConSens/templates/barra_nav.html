@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {%load static%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%static 'css/styles.css'%}">
+</head>
+<body>
+    <header>
+        <!--Logo con nombre de la pagina-->
+        <a href="/">
+            <img src="{%static 'img/ConSens.png'%}" alt="Logo de ConSens" class="logo">  
+        </a>
+    </header>
+        <!--Barra de navegacion-->
+    <ul class="barra__nav">
+        <li class="barra__nav--item">
+            <a href="/"> Inicio </a>
+        </li>
+        <li class="barra__nav--item">
+            <a href="/lecturas/">Lecturas</a>
+        </li>
+        <li class="barra__nav--item">
+            <a href="/valores_criticos/">Valores criticos</a>
+        </li>
+        <li class="barra__nav--item">
+            <a href="/quienes_somos/"> Quienes somos</a>
+        </li>
+    </ul>
+</body>
+</html>
