@@ -1,10 +1,7 @@
 from django.shortcuts import render
-from .models import Registros, ValorCriticoTemperatura, ValorCriticoHumedad, ValorCriticoPresion
+from .models import Registros, ValorCriticoTemperatura, ValorCriticoHumedad, ValorCriticoPresion, Modulo
 from django.core.paginator import Paginator
-
-def inicio(request):
-    
-    return render(request, "index.html")
+from django.db.models import OuterRef, Subquery
 
 def registrarse(request):
 
@@ -30,11 +27,11 @@ def filtrar_lecturas(request):
     
     # Filtra por ubicación
     if ubicacion:
-        datos = datos.filter(ubicacion__icontains=ubicacion)
+        datos = datos.filter(modulo__ubicacion__icontains=ubicacion)
     
     # Filtra por módulo
     if modulo:
-        datos = datos.filter(modulo__icontains=modulo)
+        datos = datos.filter(modulo__nombre__icontains=modulo)
     
     # Filtra por rango de fechas
     if fecha_min and fecha_max:
@@ -42,6 +39,13 @@ def filtrar_lecturas(request):
         
     return render(request, 'lecturas.html', {'datos': datos})
 
+def ultimas_lecturas(request):
+    """ """
+    last_registro_ids = Registros.objects.filter(modulo=OuterRef('modulo')).order_by('-fecha', '-hora').values('id')[:1]
+    ultimos_registros = Registros.objects.filter(id__in=Subquery(last_registro_ids))
+    
+    return render(request, 'index.html', {'ultimos_registros': ultimos_registros} )
+    
 def valores_criticos_temperatura(request):
     """Devuelve todos los datos de la entidad 'ValorCriticoTemperatura'."""
     valores = ValorCriticoTemperatura.objects.all() 
@@ -57,11 +61,11 @@ def filtrar_temp(request):
     
     # Filtra por módulo
     if modulo:
-        valores = valores.filter(modulo__icontains=modulo)
+        valores = valores.filter(modulo__nombre__icontains=modulo)
         
     # Filtra por usuario
     if usuario:
-        valores = valores.filter(valores__icontains=usuario)
+        valores = valores.filter(usuario__username__icontains=usuario)
         
     # Filtra por fecha especifica
     if fecha:
@@ -84,11 +88,11 @@ def filtrar_hum(request):
     
     # Filtra por módulo
     if modulo:
-        valores = valores.filter(modulo__icontains=modulo)
+        valores = valores.filter(modulo__nombre__icontains=modulo)
         
     # Filtra por usuario
     if usuario:
-        valores = valores.filter(valores__icontains=usuario)
+        valores = valores.filter(usuario__username__icontains=usuario)
         
     # Filtra por fecha especifica
     if fecha:
@@ -111,14 +115,19 @@ def filtrar_pres(request):
     
     # Filtra por módulo
     if modulo:
-        valores = valores.filter(modulo__icontains=modulo)
+        valores = valores.filter(modulo__nombre__icontains=modulo)
         
     # Filtra por usuario
     if usuario:
-        valores = valores.filter(valores__icontains=usuario)
+        valores = valores.filter(usuario__username__icontains=usuario)
         
     # Filtra por fecha especifica
     if fecha:
         valores = valores.filter(fecha__date=fecha)
 
     return render(request, 'valores_criticos_pres.html', {'valores': valores})
+
+def modulos_registrados(request):
+    """Devuelve todos los modulos registrados en la entidad 'Modulo'."""
+    datos = Modulo.objects.all() 
+    return render(request, 'modulos_registrados.html', {'datos': datos})

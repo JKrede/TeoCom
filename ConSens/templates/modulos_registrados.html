@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {%load static%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="OG:TITLE" content="ConSens">
+    <meta name="OG:IMAGE" content="{%static 'img/logo.png'%}">
+    <meta name="OG:description" content="Pagina dedicada al control de sensores (ConSens) creado por estudiantes de la UNC-FCEFyN">
+    <title>Modulos registrados</title>
+    <link rel="icon" href="{%static 'img/logo.png'%}" type="image/png">
+    <link rel="stylesheet" href="{%static 'css/styles.css'%}">
+</head>
+<body>
+    <header>
+        {% include "barra_nav.html"%}
+    </header>
+
+        <table class="tabla">
+            <tr>
+                <th class="tabla__item">Fecha de registro</th>
+                <th class="tabla__item">Ultima modificacion</th>
+                <th class="tabla__item">Nombre</th>
+                <th class="tabla__item">Grupo</th>
+                <th class="tabla__item">Ubicacion</th>
+                <th class="tabla__item">Tipo</th>
+            </tr>
+    
+            {% for modulo in datos %}
+    
+            <tr>
+                <td class="tabla__item">{{ modulo.fecha }}</td>
+                <td class="tabla__item"> {{ modulo.ultima_modificacion }}</td>
+                <td class="tabla__item">{{ modulo.nombre }}</td>
+                <td class="tabla__item">{{ modulo.grupo }}</td>
+                <td class="tabla__item">{{ modulo.ubicacion }}</td>
+                <td class="tabla__item">{{ modulo.tipo }}</td>
+            </tr>
+    
+            {% endfor %}
+    
+        </table>
+    
+</body>
+</html>

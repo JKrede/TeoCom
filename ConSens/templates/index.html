@@ -17,10 +17,36 @@
         {% include "barra_nav.html"%}
     </header>
     
-    <div id="texto">
-        *Mostrar los ultimos datos*
+    <div id="tittle">
+        Registro mas reciente de cada modulo
     </div>
 
+    <table class="tabla__index">
+        <tr>
+            <th class="tabla__item">Modulo</th>
+            <th class="tabla__item">Ubicación</th>
+            <th class="tabla__item">Fecha</th>
+            <th class="tabla__item">Hora</th>
+            <th class="tabla__item">Temperatura [°C]</th>
+            <th class="tabla__item">Humedad [%]</th>
+            <th class="tabla__item">Presión [Pa]</th>
+        </tr>
+
+        {% for registro in ultimos_registros %}
+
+        <tr>
+            <td class="tabla__item">{{ registro.modulo.nombre }}</td>
+            <td class="tabla__item">{{ registro.modulo.ubicacion }}</td>
+            <td class="tabla__item">{{ registro.fecha }}</td>
+            <td class="tabla__item">{{ registro.hora }}</td>
+            <td class="tabla__item">{{ registro.temperatura }}</td>
+            <td class="tabla__item">{{ registro.humedad }}</td>
+            <td class="tabla__item">{{ registro.presion }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
     <footer>
         
     </footer>
