@@ -78,16 +78,22 @@ a:hover {
 }
 
 .tabla {
-  width: 100%;
+  width: 95%;
+  margin: 0 auto;
   display: table;
+  text-align: center;
   background-color: transparent;
 }
-
+.tabla__index {
+  width: 65%;
+  margin: 2vh auto;
+  display: table;
+  text-align: center;
+  background-color: transparent;
+}
 .tabla__item {
-  display: table-cell;
   font-family: var(--font-family);
   font-size: 1em;
-  text-align: center;
   color: var(--text-color);
 }
 
@@ -130,6 +136,12 @@ a:hover {
   font-size: 1.2em;
 }
 
+#tittle{
+  display: flex;
+  font-size: 2em;
+  font-weight: bold;
+  justify-content: center;
+}
 
 @media screen and (max-width: 1050px) {
   
@@ -160,6 +172,13 @@ a:hover {
   #texto{
     font-size: 0.6em
   }
+
+  #tittle{
+    display: flex;
+    font-size: 1.5em;
+    font-weight: bold;
+    justify-content: center;
+  }
 }
 
 @media screen and (max-width: 575px) {
@@ -189,4 +208,10 @@ a:hover {
     font-size: 0.25em
   }
 
+  #tittle{
+    display: flex;
+    font-size: 1em;
+    font-weight: bold;
+    justify-content: center;
+  }
 }

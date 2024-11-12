@@ -1,4 +1,4 @@
-from .models import Registros
+from .models import Registros, Modulo
 from .serializer import RegistrosSerializer
 from rest_framework.response import Response
 from rest_framework import status
@@ -21,7 +21,7 @@ def registros_api_view(request):
         Response: 
             - En el caso de GET, devuelve una lista de registros con un código de estado 200 (OK).
             - En el caso de POST, devuelve los datos creados con un código de estado 201 (Created) si la validación es exitosa.
-            - Si la validación falla en POST, devuelve los errores con un código de estado 400 (Bad Request).
+            - Si cualquier validación falla en POST, devuelve los errores con un código de estado 400 (Bad Request).
             - Si el remitente no tiene el token valido o nulo, devuelve un mensaje y un código de estado 401 (Unauthorized)
     """
     if request.method=="GET":
@@ -31,18 +31,39 @@ def registros_api_view(request):
 
     elif request.method=="POST":
         token = request.headers.get("token")
+        
+        if not token:
+            return Response({"error": "Token missing"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        nombre_modulo = request.data.get("modulo") #Nombre del modulo
+        ubicacion_enviada = request.data.get("ubicacion") #Ubicacion desde donde se mando los datos
+        
         if token == API_SECRET_TOKEN:
-            registros_serializer = RegistrosSerializer(data=request.data)
-            if registros_serializer.is_valid(): 
-                registros_serializer.save()
-                return Response(registros_serializer.data, status=status.HTTP_201_CREATED)
-            return Response(registros_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"error": "Invalid or missing token"}, status=status.HTTP_401_UNAUTHORIZED)
+            if nombre_modulo and ubicacion_enviada:
+                if Modulo.objects.filter(nombre=nombre_modulo).exists():
+                    modulo = Modulo.objects.get(nombre=nombre_modulo)
+                    
+                    if modulo.ubicacion != ubicacion_enviada:
+                        modulo.ubicacion = ubicacion_enviada  # Actualiza la ubicación del modulo
+                        modulo.save() #Guarda el cambio
+                        
+                    registros_serializer = RegistrosSerializer(data=request.data)
+                    
+                    if registros_serializer.is_valid(): 
+                        registros_serializer.save()
+                        return Response(registros_serializer.data, status=status.HTTP_201_CREATED)
+                    
+                    return Response(registros_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    return Response({"error": "Modulo no encontrado o no registrado"}, status=status.HTTP_404_NOT_FOUND)
     
+            return Response({"error": "Faltan datos: Modulo o ubicacion no enviados"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Invalid or missing token"}, status=status.HTTP_401_UNAUTHORIZED)
+        
 @api_view(['GET'])
 def registros_ubicacion_view(request, ubicacion):
     """Devuelve los registros filtrados por ubicacion."""
-    registros = Registros.objects.filter(ubicacion=ubicacion)
+    registros = Registros.objects.filter(modulo__ubicacion=ubicacion)
     if registros.exists():
         registros_serializer = RegistrosSerializer(registros, many=True)
         return Response(registros_serializer.data, status=status.HTTP_200_OK)
@@ -51,7 +72,7 @@ def registros_ubicacion_view(request, ubicacion):
 @api_view(['GET'])
 def registros_modulo_view(request, modulo):
     """Devuelve los registros filtrados por modulo"""
-    registros = Registros.objects.filter(modulo=modulo)
+    registros = Registros.objects.filter(modulo__nombre=modulo)
     if registros.exists():
         registros_serializer = RegistrosSerializer(registros, many=True)
         return Response(registros_serializer.data, status=status.HTTP_200_OK)

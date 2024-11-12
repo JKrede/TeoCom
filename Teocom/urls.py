@@ -21,7 +21,7 @@ from ConSens import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('registros/', include('ConSens.urls')),
-    path('', views.inicio),
+    path('', views.ultimas_lecturas),
     path('registrarse/', views.registrarse),
     path('quienes_somos/', views.quienes_somos),
     path('lecturas/', views.mostrar_lecturas),
@@ -33,4 +33,5 @@ urlpatterns = [
     path('filtrar_hum/', views.filtrar_hum, name='filtrar_hum'),
     path('valores_criticos_pres/', views.valores_criticos_presion),
     path('filtrar_pres/', views.filtrar_pres, name='filtrar_pres'),
+    path('modulos_registrados/', views.modulos_registrados, name='modulos_registrados'),
 ]

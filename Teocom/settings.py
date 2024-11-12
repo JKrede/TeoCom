@@ -110,7 +110,7 @@ API_SECRET_TOKEN = "ea786329a9a74e2f82d824c27122e066"
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Argentina/Buenos_Aires'
 
 USE_I18N = True
 
