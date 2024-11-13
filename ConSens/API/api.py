@@ -1,4 +1,4 @@
-from .models import Registros, Modulo
+from ..models import Registros, Modulo
 from .serializer import RegistrosSerializer
 from rest_framework.response import Response
 from rest_framework import status

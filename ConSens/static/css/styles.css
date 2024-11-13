@@ -3,7 +3,7 @@
   --text-color: white;
   --accent-color: #ddc77a;
   --button-bg-color: #2c5f66;
-  --font-family: 'Bookman Old Style', monospace;
+  --font-family: calibri, 'Bookman Old Style', monospace;
   --border-radius: 5px;
 }
 
@@ -133,10 +133,12 @@ a:hover {
 }
 
 #texto{
+  font-family: var(--font-family);
   font-size: 1.2em;
 }
 
 #tittle{
+  font-family: var(--font-family);
   display: flex;
   font-size: 2em;
   font-weight: bold;

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Registros
+from ..models import Registros
 
 class RegistrosSerializer(serializers.ModelSerializer):
 
