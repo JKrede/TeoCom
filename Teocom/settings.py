@@ -23,10 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1^tu5xx#&t-&-h#kg1ek4q5(gerkps)!$k1j3@oi@3=2($7bq)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+DEBUG = True
 
+ALLOWED_HOSTS = []
+
+#En produccion
+#
+#DEBUG = False
+#
+#ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -78,10 +84,16 @@ WSGI_APPLICATION = 'Teocom.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ConSens_db',
+        'USER': 'root',
+        'PASSWORD': 'alpha14',
+        'HOST': 'localhost',  # o la dirección de tu servidor MySQL
+        'PORT': '3306',       # el puerto predeterminado de MySQL
     }
 }
+
+
 
 
 # Password validation

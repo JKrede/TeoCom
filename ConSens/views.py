@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Registros, ValorCriticoTemperatura, ValorCriticoHumedad, ValorCriticoPresion, Modulo
 from django.core.paginator import Paginator
-from django.db.models import OuterRef, Subquery
+from django.db.models import Max
 
 def registrarse(request):
 
@@ -40,10 +40,18 @@ def filtrar_lecturas(request):
     return render(request, 'lecturas.html', {'datos': datos})
 
 def ultimas_lecturas(request):
-    """ """
-    last_registro_ids = Registros.objects.filter(modulo=OuterRef('modulo')).order_by('-fecha', '-hora').values('id')[:1]
-    ultimos_registros = Registros.objects.filter(id__in=Subquery(last_registro_ids))
-    
+    """Devuelve la ultima lectura de cada modulo registrado"""
+
+# Obtener el último registro de cada módulo
+    ultimos_registros_ids = (
+    Registros.objects.values('modulo')
+    .annotate(ultimo_id=Max('id'))
+    .values_list('ultimo_id', flat=True)
+    )
+
+    # Filtrar solo los registros que correspondan a esos últimos IDs
+    ultimos_registros = Registros.objects.filter(id__in=ultimos_registros_ids)
+
     return render(request, 'index.html', {'ultimos_registros': ultimos_registros} )
     
 def valores_criticos_temperatura(request):
