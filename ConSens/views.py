@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from .models import Registros, ValorCriticoTemperatura, ValorCriticoHumedad, ValorCriticoPresion, Modulo
-from django.core.paginator import Paginator
 from django.db.models import Max
 
 def registrarse(request):
