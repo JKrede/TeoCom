@@ -18,6 +18,7 @@
 
         <table class="tabla">
             <tr>
+                <th class="tabla__item">ID</th>
                 <th class="tabla__item">Fecha de registro</th>
                 <th class="tabla__item">Ultima modificacion</th>
                 <th class="tabla__item">Nombre</th>
@@ -29,6 +30,7 @@
             {% for modulo in datos %}
     
             <tr>
+                <td class="tabla__item">{{ modulo.id }}</td>
                 <td class="tabla__item">{{ modulo.fecha }}</td>
                 <td class="tabla__item"> {{ modulo.ultima_modificacion }}</td>
                 <td class="tabla__item">{{ modulo.nombre }}</td>

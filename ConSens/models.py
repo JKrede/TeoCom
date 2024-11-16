@@ -13,9 +13,9 @@ class Modulo(models.Model):
     fecha = models.DateTimeField(auto_now_add=True) #Fecha de registro del modulo
     ultima_modificacion = models.DateTimeField(auto_now=True) #Ultima modificacion
     nombre = models.CharField(max_length=64, null=False, unique=True) #Nombre del modulo
-    grupo = models.CharField(max_length=32, null=False) #Grupo que realizo el modulo
+    grupo = models.CharField(max_length=32, null=False, unique=True) #Grupo que realizo el modulo
     ubicacion = models.CharField(max_length=64, null=False) #Ubicacion del modulo
-    tipo = models.CharField(max_length=16, choices=TECNOLOGIA, null=False)
+    tipo = models.CharField(max_length=16, choices=TECNOLOGIA, null=False) #Tipo de tecnologia utilizada
      
     class Meta:
         verbose_name = "Modulo"
@@ -43,9 +43,10 @@ class Registros(models.Model):
     fecha = models.DateField(auto_now_add=True)
     hora = models.TimeField(auto_now_add=True)
     modulo = models.ForeignKey(Modulo, on_delete=models.SET_NULL, null=True) #El modulo que registro
-    temperatura = models.IntegerField() #temperatura medida en grados celcius
-    humedad = models.DecimalField(max_digits=5, decimal_places=2) #humedad medida en porcentaje
-    presion = models.IntegerField() #presion medida en pascales
+    ubicacion = models.CharField(max_length=64, null=False) #Ubicacion de donde se realizo la lectura
+    temperatura = models.IntegerField(null=False) #temperatura medida en grados celcius
+    humedad = models.DecimalField(max_digits=5, decimal_places=2, null=False) #humedad medida en porcentaje
+    presion = models.IntegerField(null=False) #presion medida en hectopascales
     
     class Meta:
         verbose_name = "Registro"

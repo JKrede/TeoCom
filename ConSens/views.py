@@ -26,7 +26,7 @@ def filtrar_lecturas(request):
     
     # Filtra por ubicación
     if ubicacion:
-        datos = datos.filter(modulo__ubicacion__icontains=ubicacion)
+        datos = datos.filter(ubicacion__icontains=ubicacion)
     
     # Filtra por módulo
     if modulo:

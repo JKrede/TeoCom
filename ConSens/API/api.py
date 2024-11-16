@@ -24,46 +24,45 @@ def registros_api_view(request):
             - Si cualquier validación falla en POST, devuelve los errores con un código de estado 400 (Bad Request).
             - Si el remitente no tiene el token valido o nulo, devuelve un mensaje y un código de estado 401 (Unauthorized)
     """
-    if request.method=="GET":
-        registros = Registros.objects.all().order_by("fecha","hora")
+    if request.method == "GET":
+        registros = Registros.objects.all().order_by("-fecha", "-hora")
         registros_serializer = RegistrosSerializer(registros, many=True)
         return Response(registros_serializer.data, status=status.HTTP_200_OK)
 
     elif request.method=="POST":
         token = request.headers.get("token")
         
-        if not token:
+        if not token: #Verifica que se haya pasado un token
             return Response({"error": "Token missing"}, status=status.HTTP_400_BAD_REQUEST)
         
-        nombre_modulo = request.data.get("modulo") #Nombre del modulo
-        ubicacion_enviada = request.data.get("ubicacion") #Ubicacion desde donde se mando los datos
-        
-        if token == API_SECRET_TOKEN:
-            if nombre_modulo and ubicacion_enviada:
-                if Modulo.objects.filter(nombre=nombre_modulo).exists():
-                    modulo = Modulo.objects.get(nombre=nombre_modulo)
-                    
-                    if modulo.ubicacion != ubicacion_enviada:
-                        modulo.ubicacion = ubicacion_enviada  # Actualiza la ubicación del modulo
-                        modulo.save() #Guarda el cambio
-                        
+        if token == API_SECRET_TOKEN: #Verifica que el token que se paso sea correcto
+            modulo_id = request.data.get("modulo") #modulo es el id del modulo
+            ubicacion_enviada = request.data.get("ubicacion")
+            
+            if modulo_id and ubicacion_enviada:
+                if Modulo.objects.filter(id=modulo_id).exists():
+                    modulo_id = Modulo.objects.get(id=modulo_id)
+                    #Verifica que si el modulo cambio la ubicacion, se actualice dicho valor en el modulo
+                    if modulo_id.ubicacion != ubicacion_enviada: 
+                        modulo_id.ubicacion = ubicacion_enviada
+                        modulo_id.save()
                     registros_serializer = RegistrosSerializer(data=request.data)
-                    
-                    if registros_serializer.is_valid(): 
+                    if registros_serializer.is_valid():
                         registros_serializer.save()
                         return Response(registros_serializer.data, status=status.HTTP_201_CREATED)
                     
                     return Response(registros_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                else:
-                    return Response({"error": "Modulo no encontrado o no registrado"}, status=status.HTTP_404_NOT_FOUND)
-    
-            return Response({"error": "Faltan datos: Modulo o ubicacion no enviados"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"error": "Invalid or missing token"}, status=status.HTTP_401_UNAUTHORIZED)
+                
+                return Response({"error": "Modulo not found"}, status=status.HTTP_404_NOT_FOUND)
+            
+            return Response({"error": "modulo o ubicacion no enviados"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
         
 @api_view(['GET'])
 def registros_ubicacion_view(request, ubicacion):
-    """Devuelve los registros filtrados por ubicacion."""
-    registros = Registros.objects.filter(modulo__ubicacion=ubicacion)
+    """Devuelve los registros filtrados por la ubicación proporcionada."""
+    registros = Registros.objects.filter(modulo__ubicacion__iexact=ubicacion)
     if registros.exists():
         registros_serializer = RegistrosSerializer(registros, many=True)
         return Response(registros_serializer.data, status=status.HTTP_200_OK)
@@ -71,8 +70,12 @@ def registros_ubicacion_view(request, ubicacion):
 
 @api_view(['GET'])
 def registros_modulo_view(request, modulo):
-    """Devuelve los registros filtrados por modulo"""
+    """Devuelve los registros filtrados por el nombre del módulo proporcionado."""
+    if not Modulo.objects.filter(nombre=modulo).exists():
+        return Response({"message": "Módulo no encontrado."}, status=status.HTTP_404_NOT_FOUND)
+    
     registros = Registros.objects.filter(modulo__nombre=modulo)
+    
     if registros.exists():
         registros_serializer = RegistrosSerializer(registros, many=True)
         return Response(registros_serializer.data, status=status.HTTP_200_OK)
@@ -80,30 +83,19 @@ def registros_modulo_view(request, modulo):
 
 @api_view(['GET'])
 def registros_fecha_view(request, fecha_max, fecha_min):
-    """Devuelve todos los datos de la tabla 'Registros' registrados entre dos fechas.
-
-    Args:
-        request (HttpRequest): La solicitud HTTP GET.
-        fecha_max (str): La fecha máxima en formato 'YYYY-MM-DD'.
-        fecha_min (str): La fecha mínima en formato 'YYYY-MM-DD'.
-
-    Returns:
-        Response: 
-            - Lista de registros si existen datos en ese intervalo, con código de estado 200 (OK).
-            - Si no encuentra ningun dato que coincida con el filtrado devuelve un mensaje con un codigo 404 (Not Found)
-            - Si las fechas proporcionadas no tienen un formato valido, se devuelve un mensaje con un codigo 400 (Bad Request)
-    Raises:
-        ValueError: Si las fechas proporcionadas no tienen el formato 'YYYY-MM-DD', se captura y devuelve un mensaje de error indicando el formato correcto.
-    """
+    """Devuelve todos los registros en el intervalo entre dos fechas."""
     try:
         fecha_max = datetime.strptime(fecha_max, '%Y-%m-%d').date()
         fecha_min = datetime.strptime(fecha_min, '%Y-%m-%d').date()
+        if fecha_min > fecha_max:
+            return Response({"message": "El rango de fechas es inválido. 'fecha_min' debe ser menor o igual a 'fecha_max'."}, 
+                            status=status.HTTP_400_BAD_REQUEST)
     except ValueError:
         return Response({"message": "Formato de fecha inválido. Use 'YYYY-MM-DD'."}, status=status.HTTP_400_BAD_REQUEST)
 
-    registros = Registros.objects.filter(fecha__gt=fecha_min, fecha__lt=fecha_max)
+    registros = Registros.objects.filter(fecha__gte=fecha_min, fecha__lte=fecha_max)
     if registros.exists():
         registros_serializer = RegistrosSerializer(registros, many=True)
         return Response(registros_serializer.data, status=status.HTTP_200_OK)
-    
+
     return Response({"message": "No se encontraron registros en ese intervalo de tiempo."}, status=status.HTTP_404_NOT_FOUND)
