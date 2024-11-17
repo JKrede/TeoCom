@@ -31,19 +31,17 @@
 
     <table class="tabla">
         <tr>
-            <th class="tabla__item">ID</th>
             <th class="tabla__item">Fecha</th>
             <th class="tabla__item">Hora</th>
             <th class="tabla__item">Modulo</th>
             <th class="tabla__item">Usuario</th>
-            <th class="tabla__item">Temp. max</th>
-            <th class="tabla__item">Temp. min</th>
+            <th class="tabla__item">Temp. max [°C]</th>
+            <th class="tabla__item">Temp. min [°C]</th>
         </tr>
 
         {% for valor_critico in valores %}
 
         <tr>
-            <td class="tabla__item">{{ valor_critico.id }}</td>
             <td class="tabla__item">{{ valor_critico.fecha }}</td>
             <td class="tabla__item">{{ valor_critico.hora }}</td>
             <td class="tabla__item">{{ valor_critico.modulo.nombre }}</td>
@@ -55,6 +53,16 @@
         {% endfor %}
 
     </table>
+
+    <div class="paginacion">
+        {% if datos.has_previous %}
+            <a href="?page={{ datos.previous_page_number }}" class="step-links">anterior</a>
+        {% endif %}
+
+        {% if datos.has_next %}
+            <a href="?page={{ datos.next_page_number }}" class="step-links">siguiente</a>   
+        {% endif %}
+    </div>
     
 </body>
 </html>

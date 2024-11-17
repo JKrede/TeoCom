@@ -22,7 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('registros/', include('ConSens.urls')),
     path('', views.ultimas_lecturas),
-    path('registrarse/', views.registrarse),
     path('quienes_somos/', views.quienes_somos),
     path('lecturas/', views.mostrar_lecturas),
     path('filtrar_lecturas/', views.filtrar_lecturas, name='filtrar_lecturas'),

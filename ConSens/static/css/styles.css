@@ -65,6 +65,7 @@ a:hover {
   list-style: none;
   text-transform: uppercase;
 }
+
 .barra__vc--item{
   font-family: var(--font-family);
   font-weight: bold;
@@ -84,6 +85,7 @@ a:hover {
   text-align: center;
   background-color: transparent;
 }
+
 .tabla__index {
   width: 65%;
   margin: 2vh auto;
@@ -91,6 +93,7 @@ a:hover {
   text-align: center;
   background-color: transparent;
 }
+
 .tabla__item {
   font-family: var(--font-family);
   font-size: 1em;
@@ -104,6 +107,18 @@ a:hover {
   justify-content: center;
   align-items: center;
   color: var(--text-color);
+}
+
+.paginacion{
+  font-family: var(--font-family);
+  display: flex;
+  font-size: 1.2em;
+  font-weight: bold;
+  justify-content: center;
+  margin: 1em;
+}
+.step-links{
+  margin: 0 2em;
 }
 
 #filtros__ubicacion, #filtros__modulo, #filtros__fecha, #filtros__usuario{
@@ -164,6 +179,18 @@ a:hover {
       font-size: 0.65em;
   }
 
+  .paginacion{
+    font-family: var(--font-family);
+    display: flex;
+    font-size: 0.8em;
+    font-weight: bold;
+    justify-content: center;
+    margin: 1.2em;
+  }
+  .step-links{
+    margin: 0 1.2em;
+  }
+
   #filtros__ubicacion, #filtros__modulo, #filtros__fecha, #filtros__usuario{
     font-size: 0.4em;
   }
@@ -195,6 +222,18 @@ a:hover {
   
   .tabla__item {
       font-size: 0.4em;
+  }
+
+  .paginacion{
+    font-family: var(--font-family);
+    display: flex;
+    font-size: 0.5em;
+    font-weight: bold;
+    justify-content: center;
+    margin: 0.8em;
+  }
+  .step-links{
+    margin: 0 0.8em;
   }
   
   #filtros__ubicacion, #filtros__modulo, #filtros__fecha, #filtros__usuario{

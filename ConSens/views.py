@@ -1,19 +1,20 @@
 from django.shortcuts import render
 from .models import Registros, ValorCriticoTemperatura, ValorCriticoHumedad, ValorCriticoPresion, Modulo
 from django.db.models import Max
-
-def registrarse(request):
-
-    return render(request, "registrarse.html")
+from django.core.paginator import Paginator
 
 def quienes_somos(request):
-    
     return render(request, "quienes_somos.html")
     
 def mostrar_lecturas(request):
     """Devuelve todos los datos de la entidad 'Registros'."""
     datos = Registros.objects.all() 
-    return render(request, 'lecturas.html', {'datos': datos})
+    
+    paginator = Paginator(datos, 1)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'lecturas.html', {'datos': page_obj})
 
 def filtrar_lecturas(request):
     """Devuelve los datos de la entidad 'Registros' filtrando por ubicación, módulo y rango de fechas."""
@@ -35,19 +36,16 @@ def filtrar_lecturas(request):
     # Filtra por rango de fechas
     if fecha_min and fecha_max:
         datos = datos.filter(fecha__gte=fecha_min, fecha__lte=fecha_max)
-        
-    return render(request, 'lecturas.html', {'datos': datos})
+    
+    paginator = Paginator(datos, 15)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'lecturas.html', {'datos': page_obj})
 
 def ultimas_lecturas(request):
     """Devuelve la ultima lectura de cada modulo registrado"""
-
-# Obtener el último registro de cada módulo
-    ultimos_registros_ids = (
-    Registros.objects.values('modulo')
-    .annotate(ultimo_id=Max('id'))
-    .values_list('ultimo_id', flat=True)
-    )
-
+    ultimos_registros_ids = (Registros.objects.values('modulo').annotate(ultimo_id=Max('id')).values_list('ultimo_id', flat=True))
     # Filtrar solo los registros que correspondan a esos últimos IDs
     ultimos_registros = Registros.objects.filter(id__in=ultimos_registros_ids)
 
@@ -55,8 +53,13 @@ def ultimas_lecturas(request):
     
 def valores_criticos_temperatura(request):
     """Devuelve todos los datos de la entidad 'ValorCriticoTemperatura'."""
-    valores = ValorCriticoTemperatura.objects.all() 
-    return render(request, 'valores_criticos_temp.html', {'valores': valores})
+    valores = ValorCriticoTemperatura.objects.all().order_by("-fecha", "-hora")
+    
+    paginator = Paginator(valores, 15)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'valores_criticos_temp.html', {'valores': page_obj})
 
 def filtrar_temp(request):
     """Devuelve los datos de la entidad 'ValorCriticoTemperatura' filtrando por módulo, usuario y fecha."""
@@ -64,7 +67,7 @@ def filtrar_temp(request):
     usuario = request.GET.get('usuario').strip()
     fecha =request.GET.get('fecha')
 
-    valores = ValorCriticoTemperatura.objects.all()
+    valores = ValorCriticoTemperatura.objects.all().order_by("-fecha", "-hora")
     
     # Filtra por módulo
     if modulo:
@@ -78,12 +81,21 @@ def filtrar_temp(request):
     if fecha:
         valores = valores.filter(fecha__date=fecha)
 
-    return render(request, 'valores_criticos_temp.html', {'valores': valores})
+    paginator = Paginator(valores, 15)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'valores_criticos_temp.html', {'valores': page_obj})
 
 def valores_criticos_humedad(request):
     """Devuelve todos los datos de la entidad 'ValorCriticoHumedad'."""
-    valores = ValorCriticoHumedad.objects.all() 
-    return render(request, 'valores_criticos_hum.html', {'valores': valores})
+    valores = ValorCriticoHumedad.objects.all().order_by("-fecha", "-hora")
+    
+    paginator = Paginator(valores, 15)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'valores_criticos_hum.html', {'valores': page_obj})
 
 def filtrar_hum(request):
     """Devuelve los datos de la entidad 'ValorCriticoHumedad' filtrando por módulo, usuario y fecha."""
@@ -91,7 +103,7 @@ def filtrar_hum(request):
     usuario = request.GET.get('usuario').strip()
     fecha =request.GET.get('fecha')
     
-    valores = ValorCriticoHumedad.objects.all()
+    valores = ValorCriticoHumedad.objects.all().order_by("-fecha", "-hora")
     
     # Filtra por módulo
     if modulo:
@@ -105,12 +117,21 @@ def filtrar_hum(request):
     if fecha:
         valores = valores.filter(fecha__date=fecha)
 
-    return render(request, 'valores_criticos_hum.html', {'valores': valores})
+    paginator = Paginator(valores, 15)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'valores_criticos_hum.html', {'valores': page_obj})
 
 def valores_criticos_presion(request):
     """Devuelve todos los datos de la entidad 'ValorCriticoPresion'."""
-    valores = ValorCriticoPresion.objects.all()
-    return render(request, 'valores_criticos_pres.html', {'valores': valores})
+    valores = ValorCriticoPresion.objects.all().order_by("-fecha", "-hora")
+    
+    paginator = Paginator(valores, 15)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'valores_criticos_pres.html', {'valores': page_obj})
 
 def filtrar_pres(request):
     """Devuelve los datos de la entidad 'ValorCriticoPresion' filtrando por módulo, usuario y fecha."""
@@ -118,7 +139,7 @@ def filtrar_pres(request):
     usuario = request.GET.get('usuario').strip()
     fecha =request.GET.get('fecha')
     
-    valores = ValorCriticoPresion.objects.all()
+    valores = ValorCriticoPresion.objects.all().order_by("-fecha", "-hora")
     
     # Filtra por módulo
     if modulo:
@@ -132,7 +153,11 @@ def filtrar_pres(request):
     if fecha:
         valores = valores.filter(fecha__date=fecha)
 
-    return render(request, 'valores_criticos_pres.html', {'valores': valores})
+    paginator = Paginator(valores, 15)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'valores_criticos_pres.html', {'valores': page_obj})
 
 def modulos_registrados(request):
     """Devuelve todos los modulos registrados en la entidad 'Modulo'."""

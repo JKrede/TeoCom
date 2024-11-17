@@ -22,7 +22,7 @@ class Modulo(models.Model):
         verbose_name_plural = "Modulos"
         
     def __str__(self):
-        return (f"Modulo: {self.nombre} creado el: {self.fecha} por: {self.grupo} ultima modificacion: {self.ultima_modificacion} en: {self.ubicacion} ")
+        return (f"{self.nombre}")
     
 class Usuarios(AbstractUser):
     """Almacena los usuarios registrados en la pagina web."""
@@ -53,9 +53,11 @@ class Registros(models.Model):
         verbose_name_plural = "Registros"
         
     def __str__(self):
-        return (f"Modulo: {self.modulo.nombre} Dia: {self.fecha} hora: {self.hora} en: {self.modulo.ubicacion} "
+        fecha = self.fecha.strftime("%Y-%m-%d")
+        hora = self.hora.strftime("%H:%M")
+        return (f"Modulo: {self.modulo.nombre} Dia: {fecha} hora: {hora} en: {self.modulo.ubicacion} "
             f"los datos registrados son: temperatura: {self.temperatura} [°C], "
-            f"humedad: {self.humedad} [%], presion: {self.presion} [Pa]")
+            f"humedad: {self.humedad} [%], presion: {self.presion} [HPa]")
     
 class ValorCriticoTemperatura(models.Model):
     """Almacena el historico de los valores criticos de temperatura."""
@@ -83,22 +85,24 @@ class ValorCriticoTemperatura(models.Model):
         if not self.pk:
             ultimo_registro = ValorCriticoTemperatura.objects.order_by('-fecha', '-hora').first()
             
-            if ultimo_registro:
-
-                if self.temperatura_maxima is None:
+            if self.temperatura_maxima is None: 
+                if ultimo_registro:
                     self.temperatura_maxima = ultimo_registro.temperatura_maxima
-
-                if self.temperatura_minima is None:
+                else:
+                    self.temperatura_maxima = 999
+                
+            if self.temperatura_minima is None:
+                if ultimo_registro:
                     self.temperatura_minima = ultimo_registro.temperatura_minima
-            else:
-                self.temperatura_maxima = 999
-                self.temperatura_minima = -200
+                else:
+                    self.temperatura_maxima = -200
                 
         super().save(*args, **kwargs)
         
     def __str__(self):
-        return "Valor critico maximo: %s[°C], Valor critico minimo: %s[°C] seteado: %s a las %s"\
-        %(self.temperatura_maxima, self.temperatura_minima, self.fecha, self.hora)
+        fecha = self.fecha.strftime("%Y-%m-%d")
+        hora = self.hora.strftime("%H:%M")
+        return (f"Temperatura maxima: {self.temperatura_maxima}[°C], temperatura minima: {self.temperatura_minima}[°C] seteado: {fecha} a las {hora}")
         
 class ValorCriticoHumedad(models.Model):
     """Almacena el historico de los valores criticos de humedad."""
@@ -126,22 +130,25 @@ class ValorCriticoHumedad(models.Model):
         if not self.pk:
             ultimo_registro = ValorCriticoHumedad.objects.order_by('-fecha', '-hora').first()
             
-            if ultimo_registro:
-
-                if self.humedad_maxima is None:
+            if self.humedad_maxima is None: 
+                if ultimo_registro:
                     self.humedad_maxima = ultimo_registro.humedad_maxima
-
-                if self.humedad_minima is None:
+                else:
+                    self.humedad_maxima = 99.99
+                
+            if self.humedad_minima is None:
+                if ultimo_registro:
                     self.humedad_minima = ultimo_registro.humedad_minima
-            else:
-                self.humedad_maxima = 99.99
-                self.humedad_minima = 0.00
+                else:
+                    self.humedad_maxima = 0.00
                 
         super().save(*args, **kwargs)
+        
            
     def __str__(self):
-        return "Valor critico maximo: %s[%], Valor critico minimo: %s[%] seteado: %s a las %s"\
-        %(self.temperatura_maxima, self.temperatura_minima, self.fecha, self.hora)
+        fecha = self.fecha.strftime("%Y-%m-%d")
+        hora = self.hora.strftime("%H:%M")
+        return (f"Humedad maxima: {self.humedad_maxima}%, humedad minima: {self.humedad_minima}% seteado: {fecha} a las {hora}")
         
 class ValorCriticoPresion(models.Model):
     """Almacena el historico de los valores criticos de presion."""
@@ -150,9 +157,9 @@ class ValorCriticoPresion(models.Model):
     hora = models.TimeField(auto_now_add=True)
     usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True) #Usuario que realizo el cambio
     modulo = models.ForeignKey(Modulo, on_delete=models.SET_NULL, null=True) #El modulo donde se realizo el cambio
-    presion_maxima = models.IntegerField() #presion maxima en pascales
-    presion_minima = models.IntegerField() #presion minima en pascales
-    
+    presion_maxima = models.IntegerField() #presion maxima en Hectopascales
+    presion_minima = models.IntegerField() #presion minima en Hectopascales
+     
     class Meta:
         verbose_name = "Valor critico de presion"
         verbose_name_plural = "Valores criticos de presion"
@@ -169,19 +176,21 @@ class ValorCriticoPresion(models.Model):
         if not self.pk:
             ultimo_registro = ValorCriticoPresion.objects.order_by('-fecha', '-hora').first()
             
-            if ultimo_registro:
-
-                if self.presion_maxima is None:
+            if self.Presion_maxima is None: 
+                if ultimo_registro:
                     self.presion_maxima = ultimo_registro.presion_maxima
-
-                if self.presion_minima is None:
+                else:
+                    self.presion_maxima = 99999
+                
+            if self.presion_minima is None:
+                if ultimo_registro:
                     self.presion_minima = ultimo_registro.presion_minima
-            else:
-                self.presion_maxima = 999999
-                self.presion_minima = 0
+                else:
+                    self.presion_maxima = 0
                 
         super().save(*args, **kwargs)
         
     def __str__(self):
-        return "Valor critico maximo: %s[Pa], Valor critico minimo: %s[Pa] seteado: %s a las %s"\
-        %(self.temperatura_maxima, self.temperatura_minima, self.fecha, self.hora)
+        fecha = self.fecha.strftime("%Y-%m-%d")
+        hora = self.hora.strftime("%H:%M")
+        return (f"Presion maxima: {self.presion_maxima}[HPa], presion minima: {self.presion_minima}[HPa] seteado: {fecha} a las {hora}")

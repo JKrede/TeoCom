@@ -39,7 +39,7 @@
             <th class="tabla__item">Ubicación</th>
             <th class="tabla__item">Temperatura [°C]</th>
             <th class="tabla__item">Humedad [%]</th>
-            <th class="tabla__item">Presión [Pa]</th>
+            <th class="tabla__item">Presión [HPa]</th>
         </tr>
 
         {% for registro in datos %}
@@ -57,6 +57,16 @@
         {% endfor %}
 
     </table>
+
+    <div class="paginacion">
+            {% if datos.has_previous %}
+                <a href="?page={{ datos.previous_page_number }}" class="step-links">anterior</a>
+            {% endif %}
     
+            {% if datos.has_next %}
+                <a href="?page={{ datos.next_page_number }}" class="step-links">siguiente</a>   
+            {% endif %}
+    </div>
+
 </body>
 </html>
