@@ -19,7 +19,7 @@
     
     <div id="tittle">
         Registro mas reciente de cada modulo
-    </div>
+    </div>  
 
     <table class="tabla__index">
         <tr>
@@ -35,13 +35,13 @@
         {% for registro in ultimos_registros %}
 
         <tr>
-            <td class="tabla__item">{{ registro.fecha }}</td>
-            <td class="tabla__item">{{ registro.hora }}</td>
-            <td class="tabla__item">{{ registro.modulo.nombre }}</td>
-            <td class="tabla__item">{{ registro.ubicacion }}</td>
-            <td class="tabla__item">{{ registro.temperatura }}</td>
-            <td class="tabla__item">{{ registro.humedad }}</td>
-            <td class="tabla__item">{{ registro.presion }}</td>
+            <td class="tabla__item">{{ registro.registro.fecha }}</td>
+            <td class="tabla__item">{{ registro.registro.hora }}</td>
+            <td class="tabla__item">{{ registro.registro.modulo.nombre }}</td>
+            <td class="tabla__item">{{ registro.registro.ubicacion }}</td>
+            <td class="tabla__item {% if registro.alerta.temp %}alerta{% endif %}">{{ registro.registro.temperatura }}</td>
+            <td class="tabla__item {% if registro.alerta.hum %}alerta{% endif %}">{{ registro.registro.humedad }}</td>
+            <td class="tabla__item {% if registro.alerta.pres %}alerta{% endif %}">{{ registro.registro.presion }}</td>
         </tr>
 
         {% endfor %}

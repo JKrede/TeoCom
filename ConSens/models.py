@@ -176,7 +176,7 @@ class ValorCriticoPresion(models.Model):
         if not self.pk:
             ultimo_registro = ValorCriticoPresion.objects.order_by('-fecha', '-hora').first()
             
-            if self.Presion_maxima is None: 
+            if self.presion_maxima is None: 
                 if ultimo_registro:
                     self.presion_maxima = ultimo_registro.presion_maxima
                 else:

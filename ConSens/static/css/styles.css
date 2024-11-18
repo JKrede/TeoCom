@@ -100,6 +100,12 @@ a:hover {
   color: var(--text-color);
 }
 
+.alerta {
+  background-color: rgb(129, 38, 38);
+  color: var(--text-color);
+  font-weight: bold;
+}
+
 .filtros{
   width: 99%;
   margin: 10px;

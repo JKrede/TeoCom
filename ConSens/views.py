@@ -10,7 +10,7 @@ def mostrar_lecturas(request):
     """Devuelve todos los datos de la entidad 'Registros'."""
     datos = Registros.objects.all() 
     
-    paginator = Paginator(datos, 1)
+    paginator = Paginator(datos, 15)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     
@@ -44,12 +44,57 @@ def filtrar_lecturas(request):
     return render(request, 'lecturas.html', {'datos': page_obj})
 
 def ultimas_lecturas(request):
-    """Devuelve la ultima lectura de cada modulo registrado"""
+    """Devuelve la ultima lectura de cada modulo registrado y compara los valores con los valores maximos y minimos de temperatura, humedad y presion establecidos"""
+    
+    #Ultimo registro de cada mudulo
     ultimos_registros_ids = (Registros.objects.values('modulo').annotate(ultimo_id=Max('id')).values_list('ultimo_id', flat=True))
-    # Filtrar solo los registros que correspondan a esos últimos IDs
     ultimos_registros = Registros.objects.filter(id__in=ultimos_registros_ids)
+    
+    criticos_temp = ValorCriticoTemperatura.objects.all().order_by("-fecha", "-hora").first()
+    criticos_hum = ValorCriticoHumedad.objects.all().order_by("-fecha", "-hora").first()
+    criticos_pres = ValorCriticoPresion.objects.all().order_by("-fecha", "-hora").first()
 
-    return render(request, 'index.html', {'ultimos_registros': ultimos_registros} )
+    # Validar que existan valores críticos
+    if criticos_temp:
+        valor_temp_max = criticos_temp.temperatura_maxima
+        valor_temp_min = criticos_temp.temperatura_minima
+    else:
+        valor_temp_max = valor_temp_min = None
+
+    if criticos_hum:
+        valor_hum_max = criticos_hum.humedad_maxima
+        valor_hum_min = criticos_hum.humedad_minima
+    else:
+        valor_hum_max = valor_hum_min = None
+
+    if criticos_pres:
+        valor_pres_max = criticos_pres.presion_maxima
+        valor_pres_min = criticos_pres.presion_minima
+    else:
+        valor_pres_max = valor_pres_min = None
+
+    registros_con_alerta = []
+    for registro in ultimos_registros:
+        registro_data = {
+            'registro': registro,
+            'alerta': {
+                'temp': False,
+                'hum': False,
+                'pres': False
+            }
+        }
+
+        # Comparar valores con los límites críticos
+        if valor_temp_max is not None and (registro.temperatura > valor_temp_max or registro.temperatura < valor_temp_min):
+            registro_data['alerta']['temp'] = True
+        if valor_hum_max is not None and (registro.humedad > valor_hum_max or registro.humedad < valor_hum_min):
+            registro_data['alerta']['hum'] = True
+        if valor_pres_max is not None and (registro.presion > valor_pres_max or registro.presion < valor_pres_min):
+            registro_data['alerta']['pres'] = True
+
+        registros_con_alerta.append(registro_data)
+
+    return render(request, 'index.html', {'ultimos_registros': registros_con_alerta} )
     
 def valores_criticos_temperatura(request):
     """Devuelve todos los datos de la entidad 'ValorCriticoTemperatura'."""
