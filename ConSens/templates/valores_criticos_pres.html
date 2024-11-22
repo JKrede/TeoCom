@@ -31,12 +31,12 @@
 
     <table class="tabla">
         <tr>
-            <th class="tabla__item">Fecha</th>
-            <th class="tabla__item">Hora</th>
-            <th class="tabla__item">Modulo</th>
-            <th class="tabla__item">Usuario</th>
-            <th class="tabla__item">Presion max [HPa]</th>
-            <th class="tabla__item">Presion min [HPa]</th>
+            <th class="tabla__item"><a href="?sort={% if sort == 'fecha' %}-fecha{% else %}fecha{% endif %}">Fecha</a></th>
+            <th class="tabla__item"><a href="?sort={% if sort == 'hora' %}-hora{% else %}hora{% endif %}">hora</a></th>
+            <th class="tabla__item"><a href="?sort={% if sort == 'modulo' %}-modulo{% else %}modulo{% endif %}">modulo</a></th>
+            <th class="tabla__item"><a href="?sort={% if sort == 'usuario' %}-usuario{% else %}usuario{% endif %}">usuario</a></th>
+            <th class="tabla__item"><a href="?sort={% if sort == 'presion_maxima' %}-presion_maxima{% else %}presion_maxima{% endif %}">Presion max [HPa]</a></th>
+            <th class="tabla__item"><a href="?sort={% if sort == 'presion_minima' %}-presion_minima{% else %}presion_minima{% endif %}">Presion min [HPa]</a></th>
         </tr>
 
         {% for valor_critico in valores %}

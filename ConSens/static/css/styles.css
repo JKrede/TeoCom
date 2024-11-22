@@ -3,7 +3,7 @@
   --text-color: white;
   --accent-color: #ddc77a;
   --button-bg-color: #2c5f66;
-  --font-family: calibri, 'Bookman Old Style', monospace;
+  --font-family:  monospace, calibri;
   --border-radius: 5px;
 }
 
@@ -41,12 +41,11 @@ a:hover {
   justify-content: center;
   align-items: center;
   list-style: none;
-  text-transform: uppercase;
 }
 
 .barra__nav--item{
   font-family: var(--font-family);
-  font-weight: bold;
+  font-size: bold;
   font-size: 1.4em;
   text-align: center;
   margin: 1vw 1vw;
@@ -63,12 +62,10 @@ a:hover {
   justify-content: center;
   align-items: center;
   list-style: none;
-  text-transform: uppercase;
 }
 
 .barra__vc--item{
   font-family: var(--font-family);
-  font-weight: bold;
   font-size: 1em;
   text-align: center;
   margin: 0.4vw 1vw;
@@ -96,7 +93,7 @@ a:hover {
 
 .tabla__item {
   font-family: var(--font-family);
-  font-size: 1em;
+  font-size: 1.3em;
   color: var(--text-color);
 }
 
@@ -183,8 +180,12 @@ a:hover {
 
   .tabla{
       font-size: 0.65em;
+      width: 99%
   }
-
+  .tabla__index {
+    width: 99%;
+  }
+  
   .paginacion{
     font-family: var(--font-family);
     display: flex;

@@ -18,13 +18,13 @@
 
         <table class="tabla">
             <tr>
-                <th class="tabla__item">ID</th>
-                <th class="tabla__item">Fecha de registro</th>
-                <th class="tabla__item">Ultima modificacion</th>
-                <th class="tabla__item">Nombre</th>
-                <th class="tabla__item">Grupo</th>
-                <th class="tabla__item">Ubicacion</th>
-                <th class="tabla__item">Tipo</th>
+                <th class="tabla__item"><a href="?sort={% if sort == 'id' %}-id{% else %}id{% endif %}">Id</a></th>
+                <th class="tabla__item"><a href="?sort={% if sort == 'fecha' %}-fecha{% else %}fecha{% endif %}">Fecha de registro</a></th>
+                <th class="tabla__item"><a href="?sort={% if sort == 'ultima_modificacion' %}-ultima_modificacion{% else %}ultima_modificacion{% endif %}">Ultima modificacion</a></th>
+                <th class="tabla__item"><a href="?sort={% if sort == 'nombre' %}-nombre{% else %}nombre{% endif %}">Nombre</a></th>
+                <th class="tabla__item"><a href="?sort={% if sort == 'grupo' %}-grupo{% else %}grupo{% endif %}">Grupo</a></th>
+                <th class="tabla__item"><a href="?sort={% if sort == 'ubicacion' %}-ubicacion{% else %}ubicacion{% endif %}">Ubicacion</a></th>
+                <th class="tabla__item"><a href="?sort={% if sort == 'tipo' %}-tipo{% else %}tipo{% endif %}">Tipo</a></th>
             </tr>
     
             {% for modulo in datos %}

@@ -33,17 +33,16 @@
 
     <table class="tabla">
         <tr>
-            <th class="tabla__item">Fecha</th>
-            <th class="tabla__item">Hora</th>
-            <th class="tabla__item">Modulo</th>
-            <th class="tabla__item">Ubicación</th>
-            <th class="tabla__item">Temperatura [°C]</th>
-            <th class="tabla__item">Humedad [%]</th>
-            <th class="tabla__item">Presión [HPa]</th>
+            <th class="tabla__item"><a href="?sort={% if sort == 'fecha' %}-fecha{% else %}fecha{% endif %}&ubicacion={{ request.GET.ubicacion }}&modulo={{ request.GET.modulo }}&fecha_min={{ request.GET.fecha_min }}&fecha_max={{ request.GET.fecha_max }}">Fecha</a></th>
+            <th class="tabla__item"><a href="?sort={% if sort == 'hora' %}-hora{% else %}hora{% endif %}&ubicacion={{ request.GET.ubicacion }}&modulo={{ request.GET.modulo }}&fecha_min={{ request.GET.fecha_min }}&fecha_max={{ request.GET.fecha_max }}">Hora</a></th>
+            <th class="tabla__item"><a href="?sort={% if sort == 'modulo' %}-modulo{% else %}modulo{% endif %}&ubicacion={{ request.GET.ubicacion }}&modulo={{ request.GET.modulo }}&fecha_min={{ request.GET.fecha_min }}&fecha_max={{ request.GET.fecha_max }}">Módulo</a></th>
+            <th class="tabla__item"><a href="?sort={% if sort == 'ubicacion' %}-ubicacion{% else %}ubicacion{% endif %}&ubicacion={{ request.GET.ubicacion }}&modulo={{ request.GET.modulo }}&fecha_min={{ request.GET.fecha_min }}&fecha_max={{ request.GET.fecha_max }}">Ubicación</a></th>
+            <th class="tabla__item"><a href="?sort={% if sort == 'temperatura' %}-temperatura{% else %}temperatura{% endif %}&ubicacion={{ request.GET.ubicacion }}&modulo={{ request.GET.modulo }}&fecha_min={{ request.GET.fecha_min }}&fecha_max={{ request.GET.fecha_max }}">Temperatura[°C]</a></th>
+            <th class="tabla__item"><a href="?sort={% if sort == 'humedad' %}-humedad{% else %}humedad{% endif %}&ubicacion={{ request.GET.ubicacion }}&modulo={{ request.GET.modulo }}&fecha_min={{ request.GET.fecha_min }}&fecha_max={{ request.GET.fecha_max }}">Humedad[%]</a></th>
+            <th class="tabla__item"><a href="?sort={% if sort == 'presion' %}-presion{% else %}presion{% endif %}&ubicacion={{ request.GET.ubicacion }}&modulo={{ request.GET.modulo }}&fecha_min={{ request.GET.fecha_min }}&fecha_max={{ request.GET.fecha_max }}">Presión[HPa]</a></th>
         </tr>
-
+    
         {% for registro in datos %}
-
         <tr>
             <td class="tabla__item">{{ registro.fecha }}</td>
             <td class="tabla__item">{{ registro.hora }}</td>
@@ -53,19 +52,17 @@
             <td class="tabla__item">{{ registro.humedad }}</td>
             <td class="tabla__item">{{ registro.presion }}</td>
         </tr>
-
         {% endfor %}
-
     </table>
-
-    <div class="paginacion">
-            {% if datos.has_previous %}
-                <a href="?page={{ datos.previous_page_number }}" class="step-links">anterior</a>
-            {% endif %}
     
-            {% if datos.has_next %}
-                <a href="?page={{ datos.next_page_number }}" class="step-links">siguiente</a>   
-            {% endif %}
+    <div class="paginacion">
+        {% if datos.has_previous %}
+            <a href="?page={{ datos.previous_page_number }}&sort={{ sort }}" class="step-links">Anterior</a>
+        {% endif %}
+    
+        {% if datos.has_next %}
+            <a href="?page={{ datos.next_page_number }}&sort={{ sort }}" class="step-links">Siguiente</a>
+        {% endif %}
     </div>
 
 </body>
