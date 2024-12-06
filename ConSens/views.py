@@ -1,12 +1,8 @@
 from django.shortcuts import render
 from .models import Registros, ValorCriticoTemperatura, ValorCriticoHumedad, ValorCriticoPresion, Modulo
 from django.db.models import Max
-from django.db.models.functions import TruncDate
 from django.core.paginator import Paginator
 from django.views.decorators.http import require_http_methods
-
-def quienes_somos(request):
-    return render(request, "quienes_somos.html")
 
 @require_http_methods(["GET"])
 def mostrar_lecturas(request):
@@ -114,7 +110,7 @@ def valores_criticos_temperatura(request):
     return render(request, 'valores_criticos_temp.html', {'valores': page_obj, 'sort': sort_by})
 
 @require_http_methods(["GET"])
-def filtrar_temp(request):
+def filtrar_valores_criticos_temperatura(request):
     """Devuelve los datos de la entidad 'ValorCriticoTemperatura' filtrando por módulo, usuario y fecha."""
     modulo = request.GET.get('modulo').strip()
     usuario = request.GET.get('usuario').strip()
@@ -155,7 +151,7 @@ def valores_criticos_humedad(request):
     return render(request, 'valores_criticos_hum.html', {'valores': page_obj, 'sort': sort_by})
 
 @require_http_methods(["GET"])
-def filtrar_hum(request):
+def filtrar_valores_criticos_humedad(request):
     """Devuelve los datos de la entidad 'ValorCriticoHumedad' filtrando por módulo, usuario y fecha."""
     modulo = request.GET.get('modulo').strip()
     usuario = request.GET.get('usuario').strip()
@@ -196,7 +192,7 @@ def valores_criticos_presion(request):
     return render(request, 'valores_criticos_pres.html', {'valores': page_obj, 'sort': sort_by})
 
 @require_http_methods(["GET"])
-def filtrar_pres(request):
+def filtrar_valores_criticos_presion(request):
     """Devuelve los datos de la entidad 'ValorCriticoPresion' filtrando por módulo, usuario y fecha."""
     modulo = request.GET.get('modulo').strip()
     usuario = request.GET.get('usuario').strip()
