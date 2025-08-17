@@ -9,11 +9,14 @@ Consiste principalmente en almacenamiento y visualizacion de datos de los datos 
 - Backend: Python V3.12 con Django V5.1 y Django Rest Framework V3.15 para la API REST
 
 - Base de datos: MySQL
+  
 ---
+
 <h3>Modulos</h3>
 Cada modulo debe enviar su id con el que fue registrado, la ubicación donde se encuentra y los datos de temperatura en grados celcius [°C], humedad en humedad relativa [%] y presión en hectopascales [hPa].
 <h3>Valores Criticos</h3>
 Para cada tipo de dato se puede establecer un valor maximo y/o minimo con el fin de enviar una alerta mediante la aplicacion de telefono y mostrar ese valor de manera distintiva en la pagina web.
+
 ---
 Finalmente no se pudo desarrollar la aplicación de telefono, pero se estableció la estructura para poder intercomunicar la pagina web con la aplicación.
 
