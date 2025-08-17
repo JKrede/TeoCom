@@ -3,6 +3,7 @@ El proyecto consistió de modulos Arduino equipados con sensores de presión, te
 <h2 align="center">La pagina web</h2>
 Consiste principalmente en almacenamiento y visualizacion de datos de los datos recibidos, ademas los usuarios que tengan poder de administrador tienen la capacidad de establecer un valor minimo y maximo para cada tipo de dato (temperatura, presión y humedad) y para cada modulo con el fin de enviar una alerta.
 <h3>Detalles del desarrollo</h3>
+
 - Frontend: HTML y CSS.
 
 - Backend: Python V3.12 con Django V5.1 y Django Rest Framework V3.15 para la API REST
