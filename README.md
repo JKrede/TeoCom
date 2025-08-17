@@ -8,6 +8,10 @@ Cada modulo debe enviar su id con el que fue registrado, la ubicación donde se 
 <h2 align="center">La pagina web</h2>
 Consiste principalmente en almacenamiento y visualizacion de datos de los datos recibidos, ademas los usuarios que tengan poder de administrador tienen la capacidad de establecer un valor minimo y maximo para cada tipo de dato (temperatura, presión y humedad) y para cada modulo con el fin de enviar una alerta.
 <h3>Detalles de desarrollo</h3>
-Frontend: Fue desarrollado usando HTML y CSS.
-Backend: Fue desarrollando en Python V3.12 usando el framework Django V5.1 y el modulo Django Rest Framework V3.15 para desarrollar la API REST, y el motor de base de datos utilizado fue MySQL.
+
+- Frontend: Fue desarrollado usando HTML y CSS.
+
+- Backend: Fue desarrollando en Python V3.12 usando el framework Django V5.1 y el modulo Django Rest Framework V3.15 para desarrollar la API REST
+
+- Base de datos: MySQL
 
